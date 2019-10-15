@@ -4,9 +4,8 @@ import time
 
 from calib_workflow_ctrlr import CalibrationWorkflowController
 import fixture_controller
-
-SensorReading = namedtuple('SensorReading', 'sensor_id fixture_id range')
-
+from data_types import SensorReading
+  
 def test_run():
     fc = MockFixtureController()
     ui = MockUI()
@@ -29,7 +28,7 @@ def test_calib_data():
     ui = MockUI()
     tc = CalibrationWorkflowController(fc, ui)
     sensor_mappings = [(555, 1)]
-    tc.get_calibration_data(fixture_data(), sensor_mappings)
+    tc.get_calibration_data(fixture_data() , sensor_mappings)
     
     
 def fixture_data():

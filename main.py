@@ -1,11 +1,11 @@
 from linear_regression import linear_fit
 import matplotlib.pyplot as plt
 import numpy as np
-import ui
-import calib_workflow_ctrlr as cw
-import test_calib_workflow_ctrlr as tcw
 
- 
+import calib_workflow_ctrlr as cw
+import fixture_controller as fixt
+import test_calib_workflow_ctrlr as tcw
+import ui
 
 import mock_data as md
 
@@ -47,7 +47,8 @@ def main():
     # simple_plot()
     # mock_data_plot()
 
-    fc = tcw.MockFixtureController()
+    # fc = tcw.MockFixtureController()
+    fc = fixt.FixtureController()
     tui = ui.TextUI()
     tc = cw.CalibrationWorkflowController(fc, tui)
     tc.run()

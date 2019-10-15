@@ -1,10 +1,10 @@
-from collections import namedtuple
+
 from typing import List
 from calib_plot import plot_fit 
 from linear_regression import linear_fit
+from persist import CalibrationMapper
 
-SensorMapping = namedtuple('SensorMapping', 'sensor_id fixture_id')
-Calibration = namedtuple('Calibration', 'sensor_id fixture_id points slope y_intercept')
+from data_types import Calibration, SensorMapping, SensorReading
 
 class CalibrationWorkflowController(object):
     """
@@ -15,6 +15,7 @@ class CalibrationWorkflowController(object):
         """
         self._fixture_controller = fixture_controller
         self._ui = ui
+        self._mapper = CalibrationMapper()
     
     def run(self):
         
@@ -32,13 +33,14 @@ class CalibrationWorkflowController(object):
         # run calibration cycle
         sensor_data = self._fixture_controller.run(sensor_mappings)
         
-        # save data
-        self.save_calibration_data(sensor_data)
         
         calib_data = self.get_calibration_data(sensor_data, sensor_mappings)
         
         # calculate calibration
         sensor_calibrations = self.calc_calibrations(calib_data)
+        
+        # save data
+        self.save_calibration_data(sensor_calibrations)
         
         # verify tolerance
         sensor_tolerances = self.check_tolerances(sensor_calibrations)
@@ -62,19 +64,34 @@ class CalibrationWorkflowController(object):
             #ask for sensor id
             sensor_id, fixture_id = self._ui.ask_sensor_fixture_assignment()
             
+            if not self.check_data_input(sensor_id, fixture_id, sensor_mappings):
+                self._ui.fail_input_message()
+                continue
+            
             sensor_mappings.append((sensor_id, fixture_id))
             #ask done /more
             done = self._ui.ask_done()
         
         return sensor_mappings
     
+    def check_data_input(self, sensor_id, fixture_id, sensor_mappings):
+        """
+        User input checks. confirm unique fixture and sensor id /serial num
+        """
+        for mapping in sensor_mappings:
+            if mapping[0] == sensor_id or mapping[1] == fixture_id:
+                return False
+        return True
+            
     def save_sensor_mappings(self, operator_id, sensor_mappings):
         return True
     
-    def save_calibration_data(self, sensor_data):
+    def save_calibration_data(self, calib_data):
         self.log("saving sensor data")
-        self.log(sensor_data)
-        return True
+        self.log(calib_data)
+        for sensor_calib in calib_data:
+            self._mapper.persist_calibration(sensor_calib)
+            
     
     def get_calibration_data(self, sensor_data, sensor_mappings):
         """
@@ -122,4 +139,5 @@ class CalibrationWorkflowController(object):
         return True
 
     def log(self, message):
-        print(message)
+        # print(message)
+        pass

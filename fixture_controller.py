@@ -3,7 +3,8 @@ import time
 
 import mock_data
 
-SensorReading = namedtuple('SensorReading', 'sensor_id fixture_id range')
+from data_types import Calibration, SensorMapping, SensorReading
+
 class FixtureController(object):
     
     def __init__(self, final_temp=89):
@@ -46,7 +47,8 @@ class FixtureController(object):
         return readings
     
     def log(self, message):
-        print(message)
+        # print(message)
+        pass
 
     
     
