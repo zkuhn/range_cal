@@ -1,12 +1,12 @@
 
+
 class TextUI(object):
     
     def __init__(self):
         pass
     
     def ask_sensor_fixture_assignment(self):
-        
-        
+            
         input_correct = False
         sensor_id, fixture_id = "", ""
         while not input_correct:
@@ -31,4 +31,5 @@ class TextUI(object):
         print("Are you done entering sensor/fixture pairs?(Y/n)")
         correct = input()
         return  (correct == "") or (correct.lower() == "y")
+    
     

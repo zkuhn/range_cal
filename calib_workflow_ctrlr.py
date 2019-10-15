@@ -28,7 +28,12 @@ class CalibrationWorkflowController(object):
         # save fixture assignments
         self.save_sensor_mappings(operator_id, sensor_mappings)
         
-        # ask user to proceed
+        self.calibrate(sensor_mappings)
+        
+
+    def calibrate(self, sensor_mappings):
+        """
+        """
         
         # run calibration cycle
         sensor_data = self._fixture_controller.run(sensor_mappings)
