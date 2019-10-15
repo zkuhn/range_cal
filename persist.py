@@ -1,7 +1,6 @@
 import os
 import yaml
 from data_types import Calibration
-from test.test_email import test_message
 
 class CalibrationMapper(object):
     def __init__(self):

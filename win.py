@@ -1,6 +1,6 @@
 import sys
 
-from PySide2 import QtCore, QtGui, QtQml
+from PySide2 import QtCore, QtGui, QtQml, QtWidgets
 
 from PySide2.QtCore import (
     Qt, 
@@ -62,12 +62,14 @@ class WindowUI(QObject):
         pass
     
     def log(self, message):
-        print(message)
+        # print(message)
+        pass
     
 
 if __name__ == '__main__':
 
-    app = QtGui.QGuiApplication()
+    # app = QtGui.QGuiApplication()
+    app = QtWidgets.QApplication()
     uic = WindowUI()
     
     sys.exit(app.exec_())
